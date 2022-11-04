@@ -24,15 +24,39 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+# The following variables should be set in the project that loads this package. 
+vars:
+    ga4:
+        project: "GA4BigQuery"
+        dataset: "ga4bigquery-364118"
+        start_date: "20220930" # Earliest date to load
+        frequency: "daily" # daily|streaming|daily+streaming Match to the type of export configured in GA4; daily+streaming appends today's intraday data to daily data
 
-# Configuring models
-# Full documentation: https://docs.getdbt.com/docs/configuring-models
+vars:
+  ga4:
+    user_properties:
+      - user_property_name: "membership_level"
+        value_type: "int_value"
+      - user_property_name: "account_status"
+        value_type: "string_value"
+vars:
+  ga4:
+      derived_user_properties:
+        - event_parameter: "page_location"
+          user_property_name: "most_recent_page_location"  
+          value_type: "string_value"
+        - event_parameter: "another_event_param"
+          user_property_name: "most_recent_param"  
+          value_type: "string_value"
 
-# In this example config, we tell dbt to build all models in the example/ directory
-# as tables. These settings can be overridden in the individual model files
-# using the `{{ config(...) }}` macro.
+vars:
+  ga4:
+      frequency:"daily+streaming"
 models:
   dbt_demo:
     # Applies to all files under models/example/
     example:
       materialized: view
+
+
+
