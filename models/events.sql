@@ -1,7 +1,6 @@
 WITH _source as (
 SELECT 
-PARSE_DATE('%Y%m%d',event_date) as event_date, event_timestamp,TIMESTAMP_MICROS(event_timestamp) as event_ts, event_name,
-user_pseudo_id,
+event_date, event_timestamp, event_name,user_pseudo_id,
 MAX(CASE WHEN params.key = 'ga_session_number' THEN params.value.int_value	ELSE NULL END ) OVER (PARTITION BY event_timestamp,user_pseudo_id) as ga_session_number,
 MAX(CASE WHEN params.key = 'page_title'   THEN params.value.string_value ELSE NULL END ) OVER (PARTITION BY event_timestamp,user_pseudo_id) as page_title,
 MAX(CASE WHEN params.key = 'page_location' THEN params.value.string_value ELSE NULL END ) OVER (PARTITION BY event_timestamp,user_pseudo_id) as page_location,
