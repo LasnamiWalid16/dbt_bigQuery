@@ -65,4 +65,4 @@ device.web_info.browser_version as mobile_browser_version
 SELECT * FROM event_aggregated
 
 WHERE ga_session_number <= 7
-ORDER BY event_ts DESC;
+ORDER BY event_ts DESC
